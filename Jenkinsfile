@@ -19,7 +19,9 @@ pipeline {
 
         stage('Scan Code with Detect-Secrets') {
             steps {
-                sh detect-secrets -C /opt/Java-Vul scan | tee detect-secrets_output
+                sh '''
+                detect-secrets -C /opt/Java-Vul scan | tee detect-secrets_output
+                '''
             }
         }
 
