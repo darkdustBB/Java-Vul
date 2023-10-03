@@ -64,7 +64,7 @@ pipeline {
         always {
             // Archive the Trufflehog results as a build artifact
             archiveArtifacts 'detect-secrets_output'
-            archiveArtifacts '/opt/Java-Vul/Semgrep_Output'
+            archiveArtifacts 'Semgrep_Output_new'
             
             // Publish HTML report
             publishHTML([
