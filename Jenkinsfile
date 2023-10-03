@@ -37,7 +37,7 @@ pipeline {
   stage('Dynamic application security testing'){
             steps{
                 sh '''
-                     skipfish -o /opt/result_skipfish_2  http://172.16.1.23:1337
+                     skipfish -o /opt/result_skipfish_3  http://172.16.1.23:1337
                 '''
             }
         }
