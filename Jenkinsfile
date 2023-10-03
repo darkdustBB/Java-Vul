@@ -37,7 +37,7 @@ pipeline {
   stage('Dynamic application security testing'){
             steps{
                 sh '''
-                     skipfish -o /opt/result_skipfish_4  http://172.16.1.23:1337
+                     skipfish -o /opt/result_skipfish_5  http://172.16.1.23:1337
                 '''
             }
         }
@@ -71,7 +71,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: '/opt/result_skipfish_4', // Change this to the correct directory
+                reportDir: '/opt/result_skipfish_5', // Change this to the correct directory
                 reportFiles: 'index.html',    // Change this to the correct report file
                 reportName: 'Skipfish Report',
                 reportTitles: 'Skipfish Report'
