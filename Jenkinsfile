@@ -47,7 +47,17 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+    
+
+
+     stage('Debug') {
+    steps {
+        sh 'ls -R'
     }
+}
+
+    }
+
 
        post {
         always {
