@@ -60,7 +60,7 @@ pipeline {
 
         stage('Archive Zip Folder') {
     steps {
-        archiveArtifacts artifacts: '/opt/skipfishoutput1.zip', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'skipfishoutput1.zip', allowEmptyArchive: true
     }
 }
 
