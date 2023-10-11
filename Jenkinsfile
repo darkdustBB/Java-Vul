@@ -36,8 +36,8 @@ pipeline {
   stage('Dynamic application security testing'){
             steps{
                 sh '''
-                     skipfish -o /opt/skipfishoutput_new  http://172.16.1.23:1337
-                     zip -r skipfishoutput2.zip /opt/skipfishoutput_new
+                     skipfish -o /opt/skipfishoutput_new_output  http://172.16.1.23:1337
+                     zip -r skipfishoutput3.zip /opt/skipfishoutput_new_output
                      pwd
                 '''
             }
@@ -82,7 +82,7 @@ pipeline {
 
         stage('Archive Zip Folder') {
     steps {
-        archiveArtifacts artifacts: 'skipfishoutput2.zip', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'skipfishoutput3.zip', allowEmptyArchive: true
     }
 }
 
