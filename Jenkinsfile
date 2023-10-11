@@ -42,14 +42,36 @@ pipeline {
                 '''
             }
         }
+
+
+        stage('Container image testing with trivy'){
+            steps{
+                sh '''
+                    trivy image add dvwa-dvwa | tee trivy_output
+                '''     
+        }
+        }
+
+        stage('Container image testing with Anchore-engine'){
+            steps{
+                sh '''
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar image add docker.io/library/debian:latest
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar image wait docker.io/library/debian:latest
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar image list
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar image get docker.io/library/debian:latest
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar system feeds list
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar system wait
+                    anchore-cli --url http://localhost:8228/v1 --u admin --p foobar image vuln docker.io/library/debian:latest os | tee Anchore_output
+                    
+                '''     
+        }
+        }
        
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-    
-
 
      stage('Debug') {
     steps {
@@ -67,16 +89,13 @@ pipeline {
 
     }
 
-
        post {
         always {
             // Archive the Trufflehog results as a build artifact
             archiveArtifacts 'detect-secrets_output'
             archiveArtifacts 'semgrep_output_1'
-            
-          
-            
-            
+            archiveArtifacts 'trivy_output' 
+            archiveArtifacts 'Anchore_output' 
 
              // Send email notifications
         emailext(
