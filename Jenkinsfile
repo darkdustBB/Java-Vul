@@ -47,7 +47,7 @@ pipeline {
         stage('Container image testing with trivy'){
             steps{
                 sh '''
-                    trivy image add dvwa-dvwa | tee trivy_output
+                    trivy image dvwa-dvwa | tee trivy_output
                 '''     
         }
         }
