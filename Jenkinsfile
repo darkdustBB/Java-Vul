@@ -36,8 +36,8 @@ pipeline {
   stage('Dynamic application security testing'){
             steps{
                 sh '''
-                     skipfish -o /opt/skipfishoutput_new_output_out_out http://172.16.1.23:1337
-                     zip -r skipfishoutput5.zip /opt/skipfishoutput_new_output_out_out
+                     skipfish -o /opt/skipfishoutput_new_output_out_out_p http://172.16.1.23:1337
+                     zip -r skipfishoutput6.zip /opt/skipfishoutput_new_output_out_out_p
                      pwd
                 '''
             }
@@ -70,7 +70,7 @@ pipeline {
           stage('Container image testing with grype'){
             steps{
                 sh '''
-                    grype image dvwa-dvwa | tee grype_output
+                    grype dvwa-dvwa | tee grype_output
                 '''     
         }
         }
@@ -99,7 +99,7 @@ pipeline {
 
         stage('Archive Zip Folder') {
     steps {
-        archiveArtifacts artifacts: 'skipfishoutput5.zip', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'skipfishoutput6.zip', allowEmptyArchive: true
     }
 }
 
