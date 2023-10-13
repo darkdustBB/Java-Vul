@@ -36,8 +36,8 @@ pipeline {
   stage('Dynamic application security testing'){
             steps{
                 sh '''
-                     skipfish -o /opt/skipfishoutput_new_output_out  http://172.16.1.23:1337
-                     zip -r skipfishoutput4.zip /opt/skipfishoutput_new_output_out
+                     skipfish -o /opt/skipfishoutput_new_output_out_out http://172.16.1.23:1337
+                     zip -r skipfishoutput5.zip /opt/skipfishoutput_new_output_out_out
                      pwd
                 '''
             }
@@ -66,6 +66,23 @@ pipeline {
                 '''     
         }
         }
+
+          stage('Container image testing with grype'){
+            steps{
+                sh '''
+                    grype image dvwa-dvwa | tee grype_output
+                '''     
+        }
+        }
+
+
+         stage('Container image testing with clair'){
+            steps{
+                sh '''
+                     clair-scanner --clair=http://172.16.1.204:6060 --ip=localhost vulnerable-java-application_vulnado| tee clair_output
+                '''     
+        }
+        }
        
         stage('Build') {
             steps {
@@ -82,7 +99,7 @@ pipeline {
 
         stage('Archive Zip Folder') {
     steps {
-        archiveArtifacts artifacts: 'skipfishoutput4.zip', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'skipfishoutput5.zip', allowEmptyArchive: true
     }
 }
 
@@ -91,11 +108,13 @@ pipeline {
 
        post {
         always {
-            // Archive the Trufflehog results as a build artifact
+            // Archive the results as a build artifact
             archiveArtifacts 'detect-secrets_output'
             archiveArtifacts 'semgrep_output_1'
             archiveArtifacts 'trivy_output' 
             archiveArtifacts 'Anchore_output' 
+            archiveArtifacts 'grype_output'
+            archiveArtifacts 'clair_output'
 
              // Send email notifications
         emailext(
